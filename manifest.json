@@ -3,7 +3,11 @@
   "description": "Extension for getting notifications when PRs need your attention",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage", "identity"],
+  "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": "github_pr_notifier.png"
