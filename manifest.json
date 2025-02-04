@@ -3,7 +3,7 @@
   "description": "Extension for getting notifications when PRs need your attention",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage"],
+  "permissions": ["storage", "alarms"],
   "background": {
     "service_worker": "background.js",
     "type": "module"

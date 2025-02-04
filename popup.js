@@ -22,13 +22,12 @@ tokenForm.addEventListener('submit', async (event) => {
 async function displayPrs() {
   const { lastPrUpdate, prData } = await chrome.storage.local.get(['lastPrUpdate', 'prData']);
 
-  if (!prData) {
+  if (!prData || prData.items.length === 0) {
     prList.style.display = 'none';
     noPrsBlock.style.display = 'block';
     return;
   }
 
-  console.log(noPrsBlock.display);
   noPrsBlock.style.display = 'none';
   prList.style.display = 'block';
   prList.innerHTML = '';

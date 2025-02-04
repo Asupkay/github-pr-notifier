@@ -1,3 +1,5 @@
+const PR_REFRESH_ALARM_NAME = 'pr-refesh-alarm';
+
 async function fetchPrs() {
   const { github_token: githubToken } = await chrome.storage.local.get(['github_token']);
   if (!githubToken) return;
@@ -43,4 +45,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-setInterval(fetchPrs, 60000);
+async function ensureAlarmExists() {
+  const alarm = await chrome.alarms.get(PR_REFRESH_ALARM_NAME);
+
+  if (!alarm) {
+    await chrome.alarms.create(PR_REFRESH_ALARM_NAME, { periodInMinutes: 1 });
+  }
+}
+
+chrome.runtime.onStartup.addListener(() => {
+  ensureAlarmExists();
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  fetchPrs();
+  ensureAlarmExists();
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === PR_REFRESH_ALARM_NAME) {
+    console.log("Refreshing data...");
+    fetchPrs();
+  }
+});
