@@ -20,7 +20,7 @@ tokenForm.addEventListener('submit', async (event) => {
 });
 
 async function displayPrs() {
-  const { lastPrUpdate, prData } = await chrome.storage.local.get(['lastPrUpdate', 'prData']);
+  const { prData } = await chrome.storage.local.get(['prData']);
 
   if (!prData || prData.items.length === 0) {
     prList.style.display = 'none';
@@ -88,6 +88,7 @@ async function checkLoginStatus() {
   tokenForm.style.display = 'none';
   prBlock.style.display = 'block';
   displayTime();
+  displayPrs();
   await chrome.runtime.sendMessage({ action: "refreshPrs" })
 }
 
