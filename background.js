@@ -13,14 +13,12 @@ async function fetchPrs() {
     return;
   }
   const userData = await response.json();
-  console.log(userData);
 
   const prResponse = await fetch(`https://api.github.com/search/issues?q=review-requested:${userData.login}+is:pr+state:open`, {
     headers: { Authorization: `token ${githubToken}` }
   })
   const lastPrUpdate = new Date();
   const prData = await prResponse.json();
-  console.log(prData, lastPrUpdate);
 
   chrome.action.setBadgeText({text: formatItemsNum(prData.items.length)});
 

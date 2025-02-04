@@ -23,13 +23,14 @@ async function displayPrs() {
   const { lastPrUpdate, prData } = await chrome.storage.local.get(['lastPrUpdate', 'prData']);
 
   if (!prData) {
-    prList.display.style = 'none';
-    noPrsBlock.display.style = 'block';
+    prList.style.display = 'none';
+    noPrsBlock.style.display = 'block';
     return;
   }
 
-  noPrsBlock.display.style = 'none';
-  prList.display.style = 'block';
+  console.log(noPrsBlock.display);
+  noPrsBlock.style.display = 'none';
+  prList.style.display = 'block';
   prList.innerHTML = '';
   prData.items.forEach(pr => {
     const li = document.createElement('li');
