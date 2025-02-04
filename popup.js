@@ -1,6 +1,7 @@
 const tokenForm = document.getElementById('tokenForm');
 const prList = document.getElementById('prList');
 const prBlock = document.getElementById('prBlock');
+const noPrsBlock = document.getElementById('noPrsBlock');
 const lastPrUpdateDisplay = document.getElementById('lastPrUpdate');
 
 tokenForm.addEventListener('submit', async (event) => {
@@ -21,8 +22,14 @@ tokenForm.addEventListener('submit', async (event) => {
 async function displayPrs() {
   const { lastPrUpdate, prData } = await chrome.storage.local.get(['lastPrUpdate', 'prData']);
 
-  if (!prData) return;
+  if (!prData) {
+    prList.display.style = 'none';
+    noPrsBlock.display.style = 'block';
+    return;
+  }
 
+  noPrsBlock.display.style = 'none';
+  prList.display.style = 'block';
   prList.innerHTML = '';
   prData.items.forEach(pr => {
     const li = document.createElement('li');
