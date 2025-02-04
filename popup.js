@@ -80,6 +80,7 @@ async function checkLoginStatus() {
   } 
   tokenForm.style.display = 'none';
   prBlock.style.display = 'block';
+  displayTime();
   await chrome.runtime.sendMessage({ action: "refreshPrs" })
 }
 
