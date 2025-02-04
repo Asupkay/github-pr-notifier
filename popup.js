@@ -19,7 +19,7 @@ tokenForm.addEventListener('submit', async (event) => {
 });
 
 async function displayPrs() {
-  const { lastPrUpdate, prData }= await chrome.storage.local.get(['lastPrUpdate', 'prData']);
+  const { lastPrUpdate, prData } = await chrome.storage.local.get(['lastPrUpdate', 'prData']);
 
   if (!prData) return;
 
