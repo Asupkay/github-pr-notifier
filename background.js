@@ -1,4 +1,4 @@
-async function fetchPRs() {
+async function fetchPrs() {
   const { github_token: githubToken } = await chrome.storage.local.get(['github_token']);
   if (!githubToken) return;
 
@@ -18,12 +18,17 @@ async function fetchPRs() {
   const prResponse = await fetch(`https://api.github.com/search/issues?q=review-requested:${userData.login}+is:pr+state:open`, {
     headers: { Authorization: `token ${githubToken}` }
   })
+  const lastPrUpdate = new Date();
   const prData = await prResponse.json();
-  console.log(prData);
+  console.log(prData, lastPrUpdate);
 
   chrome.action.setBadgeText({text: formatItemsNum(prData.items.length)});
 
-  return prData
+  await chrome.storage.local.set({ prData, lastPrUpdate: lastPrUpdate.toString() })
+
+  chrome.runtime.sendMessage({ action: "PrsRefreshed" });
+  return prData;
+
 }
 
 function formatItemsNum(amountOfItems) {
@@ -34,8 +39,10 @@ function formatItemsNum(amountOfItems) {
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "fetchPRs") {
-    fetchPRs().then(sendResponse);
+  if (request.action === "refreshPrs") {
+    fetchPrs().then(sendResponse);
     return true;
   }
 });
+
+setInterval(fetchPrs, 60000);

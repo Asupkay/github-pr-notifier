@@ -5,13 +5,16 @@
     <link rel="stylesheet" href="popup.css">
   </head>
   <body>
-    <h2>Your PR reviews</h2>
     <form id="tokenForm" autocomplete="off">
       <label for="tokenField">GitHub token:</label>
       <input type="text" id="tokenField" name="tokenField"/>
       <button type="submit">Submit</button>
     </form>
-    <ul id="pr-list"><ul>
+    <div id="prBlock">
+      <h2>Your PR reviews</h2>
+      <ul id="prList"></ul>
+      <div id="lastPrUpdate"></div>
+    </div>
     <script src="popup.js"></script>
   </body>
 </html>
