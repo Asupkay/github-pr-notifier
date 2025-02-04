@@ -1,3 +1,11 @@
+body {
+    width: 250px;
+}
+
 #tokenForm {
     display: none;
+}
+
+.text-align-right {
+    text-align: right;
 }
