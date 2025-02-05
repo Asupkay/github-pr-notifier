@@ -1,9 +1,38 @@
 body {
-    width: 250px;
+    width: 300px;
 }
 
 #loginBlock {
     display: none;
+}
+
+#authorDiv {
+    width: fit-content;
+    color: inherit;
+    text-decoration: inherit;
+    display: flex;
+    margin-top: 4px;
+    gap: 2px;
+}
+
+#firstPrLine {
+    display: flex;
+    justify-content: space-between;
+}
+
+#firstPrLine>a {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#firstPrLine>div {
+    flex-shrink: 0;
+    text-align: right;
+}
+
+#authorDiv>img {
+    height: 14px;
 }
 
 #prBlock {
@@ -49,8 +78,12 @@ body {
 }
 
 #prList>div {
-    border: 1px solid black;
+    border-top: 1px solid black;
     padding: 8px;
+}
+
+#prList>div:last-child {
+    border-bottom: 1px solid black;
 }
 
 #submitButton {

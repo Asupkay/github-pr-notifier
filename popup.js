@@ -51,17 +51,64 @@ async function displayPrs() {
   prData.items.forEach(pr => {
     const div = document.createElement('div');
     console.log(pr);
+
+    const firstLine = document.createElement('div')
+    firstLine.id = "firstPrLine";
     const prLink = document.createElement('a');
     prLink.href = pr.html_url;
-    prLink.target = "_blank";
+    prLink.title = pr.title;
+    prLink.target = '_blank';
     prLink.innerText = pr.title;
-    div.appendChild(prLink)
+    const lastUpdate = document.createElement('div');
+    lastUpdate.innerText = getTimeSinceChanges(new Date(pr.updated_at))
+    firstLine.appendChild(prLink);
+    firstLine.appendChild(lastUpdate);
+
+    const authorDiv = document.createElement('a');
+    authorDiv.href = pr?.user?.html_url
+    authorDiv.target = '_blank';
+    authorDiv.id = 'authorDiv'
+    const username = document.createElement('div');
+    username.innerText = pr?.user?.login
+    const userPicture = document.createElement('img');
+    userPicture.src = pr?.user?.avatar_url;
+    console.log(username);
+    authorDiv.appendChild(userPicture);
+    authorDiv.appendChild(username);
+
+    div.appendChild(firstLine);
+    div.appendChild(authorDiv);
     prList.appendChild(div);
   });
 
 }
 
-function getTimeSince(date) {
+function getTimeSinceChanges(date) {
+  const now = new Date();
+  const then = new Date(date);
+
+  // Get the difference in milliseconds
+  const diff = now.getTime() - then.getTime();
+
+  // Convert to seconds, minutes, hours, days, etc. as needed
+  const seconds = Math.round(diff / 1000);
+  const minutes = Math.round(seconds / 60);
+  const hours = Math.round(minutes / 60);
+  const days = Math.round(hours / 24);
+
+  // Return the desired format
+  if (seconds < 60) {
+    return seconds + " seconds ago";
+  } else if (minutes < 60) {
+    return minutes + " minutes ago";
+  } else if (hours < 24) {
+    return hours + " hours ago";
+  } else {
+    return days + " days ago";
+  }
+}
+
+function getTimeSinceUpdate(date) {
   const now = new Date();
   const then = new Date(date);
 
@@ -94,7 +141,7 @@ async function displayTime() {
   const { lastPrUpdate } = await chrome.storage.local.get(['lastPrUpdate']);
   if (!lastPrUpdate) return;
 
-  lastPrUpdateDisplay.innerText = getTimeSince(new Date(lastPrUpdate));
+  lastPrUpdateDisplay.innerText = getTimeSinceUpdate(new Date(lastPrUpdate));
 }
 
 setInterval(displayTime, 1000);
