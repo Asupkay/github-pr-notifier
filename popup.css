@@ -2,7 +2,11 @@ body {
     width: 250px;
 }
 
-#tokenForm {
+#loginBlock {
+    display: none;
+}
+
+#prBlock {
     display: none;
 }
 

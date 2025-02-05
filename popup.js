@@ -1,4 +1,5 @@
 const tokenForm = document.getElementById('tokenForm');
+const loginBlock = document.getElementById('loginBlock');
 const prList = document.getElementById('prList');
 const prBlock = document.getElementById('prBlock');
 const noPrsBlock = document.getElementById('noPrsBlock');
@@ -15,8 +16,9 @@ tokenForm.addEventListener('submit', async (event) => {
 
   await chrome.storage.local.set({ github_token: accessToken })
 
-  console.log('GitHub token stored successfully!');
-  checkLoginStatus();
+  if (await checkGithubTokenValidity(accessToken)) {
+    checkLoginStatus();
+  }
 });
 
 async function displayPrs() {
@@ -81,11 +83,11 @@ async function checkLoginStatus() {
   const { github_token: githubToken } = await chrome.storage.local.get(['github_token']);
   //const githubToken = null;
   if (!githubToken) {
-    tokenForm.style.display = 'block';
+    loginBlock.style.display = 'block';
     prBlock.style.display = 'none';
     return;
   } 
-  tokenForm.style.display = 'none';
+  loginBlock.style.display = 'none';
   prBlock.style.display = 'block';
   displayTime();
   displayPrs();
@@ -95,8 +97,37 @@ async function checkLoginStatus() {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "PrsRefreshed") {
     displayPrs();
-    return true;
+    return false;
+  }
+  if (request.action === "Logout") {
+    checkLoginStatus();
+    return false;
   }
 });
+
+async function checkGithubTokenValidity(token) {
+  try {
+    const response = await fetch('https://api.github.com/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+      },
+    })
+    
+    if (response.ok) {
+      return true;
+    }
+
+    if (response.status === 401) {
+      return false;
+    }
+
+    throw new Error('Error checking token validity');
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
 
 checkLoginStatus();

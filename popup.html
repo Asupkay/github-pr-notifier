@@ -5,11 +5,15 @@
     <link rel="stylesheet" href="popup.css">
   </head>
   <body>
-    <form id="tokenForm" autocomplete="off">
-      <label for="tokenField">GitHub token:</label>
-      <input type="text" id="tokenField" name="tokenField"/>
-      <button type="submit">Submit</button>
-    </form>
+    <div id="loginBlock">
+      <h2>Login</h2>
+      <div>A GitHub personal token is needed to retrieve your PRs. To create one go <a href="https://github.com/settings/personal-access-tokens" target="_blank">here</a> and give it read-only permissions to Pull Requests</div>
+      <form id="tokenForm" autocomplete="off">
+        <label for="tokenField">GitHub token:</label>
+        <input type="text" id="tokenField" name="tokenField" required/>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
     <div id="prBlock">
       <div id="noPrsBlock">No open pull requests with review requested</div>
       <ul id="prList"></ul>

@@ -11,7 +11,14 @@ async function fetchPrs() {
     }
   })
   if (!response.ok) {
-    console.log("Error");
+    if (response.status === 401) {
+      // Log the user out as their token is probably expired
+      await chrome.storage.local.remove('github_token')
+      chrome.action.setBadgeText({text: '?'});
+      chrome.action.setBadgeBackgroundColor({color: 'red'});
+      chrome.runtime.sendMessage({ action: "Logout" });
+      return;
+    }
     return;
   }
   const userData = await response.json();
@@ -23,6 +30,7 @@ async function fetchPrs() {
   const prData = await prResponse.json();
 
   chrome.action.setBadgeText({text: formatItemsNum(prData.items.length)});
+  chrome.action.setBadgeBackgroundColor({color: 'black'});
 
   await chrome.storage.local.set({ prData, lastPrUpdate: lastPrUpdate.toString() })
 
@@ -64,7 +72,6 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === PR_REFRESH_ALARM_NAME) {
-    console.log("Refreshing data...");
     fetchPrs();
   }
 });
