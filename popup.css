@@ -34,10 +34,18 @@ body {
     padding-top: 8px
 }
 
+.gap-4 {
+    gap: 4px;
+}
+
 #errorMessage {
     margin-top: 8px;
     color: red;
     display: none;
+}
+
+.align-center {
+    align-items: center;
 }
 
 #submitButton {
@@ -48,5 +56,9 @@ body {
 #submitButton:hover {
     background-color: black;
     color: white;
+    cursor: pointer;
+}
+
+#refreshIcon:hover {
     cursor: pointer;
 }

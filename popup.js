@@ -6,6 +6,10 @@ const noPrsBlock = document.getElementById('noPrsBlock');
 const lastPrUpdateDisplay = document.getElementById('lastPrUpdate');
 const errorMessage = document.getElementById("errorMessage");
 
+document.getElementById("refreshIcon").addEventListener('click', (event) => {
+  chrome.runtime.sendMessage({ action: "refreshPrs" })
+});
+
 tokenForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   
