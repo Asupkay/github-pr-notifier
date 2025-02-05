@@ -15,7 +15,7 @@ async function fetchPrs() {
     if (response.status === 401) {
       // Log the user out as their token is probably expired
       console.log("there");
-      logout();
+      logout(true);
     }
     return;
   }
@@ -28,7 +28,7 @@ async function fetchPrs() {
   if (!prResponse.ok) {
     if (prResponse.status === 401) {
       console.log("here");
-      logout();
+      logout(true);
     }
     return;
   }
@@ -45,10 +45,16 @@ async function fetchPrs() {
 
 }
 
-async function logout() {
+async function logout(failure = false) {
   await chrome.storage.local.clear()
-  chrome.action.setBadgeText({text: '?'});
-  chrome.action.setBadgeBackgroundColor({color: 'red'});
+  if (failure) {
+    chrome.action.setBadgeText({text: '?'});
+    chrome.action.setBadgeBackgroundColor({color: 'red'});
+  } else {
+    chrome.action.setBadgeText({ text: "" });
+    chrome.action.setBadgeBackgroundColor({ color: [0, 0, 0, 0] });
+  }
+
   chrome.runtime.sendMessage({ action: "Logout" });
 }
 
