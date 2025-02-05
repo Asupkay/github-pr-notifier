@@ -81,6 +81,17 @@ chrome.runtime.onStartup.addListener(() => {
 chrome.runtime.onInstalled.addListener(() => {
   fetchPrs();
   ensureAlarmExists();
+  chrome.contextMenus.create({
+    id: "logout",
+    title: "Logout",
+    contexts: ["action"],
+  });
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "logout") {
+    logout();
+  }
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
