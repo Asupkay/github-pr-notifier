@@ -10,10 +10,6 @@ body {
     display: none;
 }
 
-#submitButton {
-    margin-top: 8px;
-}
-
 #noPrsBlock {
     color: gray;
 }
@@ -22,7 +18,35 @@ body {
     text-align: right;
 }
 
+.flex {
+    display: flex;
+}
+
+.justify-end {
+    justify-content: end;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.pt-8 {
+    padding-top: 8px
+}
+
 #errorMessage {
+    margin-top: 8px;
     color: red;
     display: none;
+}
+
+#submitButton {
+    background-color: white;
+    border: 1px black solid;
+}
+
+#submitButton:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
 }

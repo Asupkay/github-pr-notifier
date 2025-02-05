@@ -13,10 +13,12 @@
         <p> You'll also need to select repository access: public repositories, all repositories, or selected repositories. If you choose 'All' or 'Selected', be sure to grant read-only access to Pull Requests.</p>
       </div>
       <form id="tokenForm" autocomplete="off">
-        <label for="tokenField">GitHub token:</label>
+        <label class="bold" for="tokenField">GitHub token:</label>
         <input type="text" id="tokenField" name="tokenField"/>
-        <button id="submitButton" type="submit">Submit</button>
-        <div id="errorMessage"></div>
+        <div class="flex justify-end pt-8">
+          <button id="submitButton" type="submit">Submit</button>
+        </div>
+        <div id="errorMessage" class="text-align-right"></div>
       </form>
     </div>
     <div id="prBlock">
