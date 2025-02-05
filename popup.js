@@ -51,7 +51,11 @@ async function displayPrs() {
   prData.items.forEach(pr => {
     const div = document.createElement('div');
     console.log(pr);
-    div.innerHTML = `<a href="${pr.html_url}" target="_blank">${pr.title}</a>`;
+    const prLink = document.createElement('a');
+    prLink.href = pr.html_url;
+    prLink.target = "_blank";
+    prLink.innerText = pr.title;
+    div.appendChild(prLink)
     prList.appendChild(div);
   });
 
