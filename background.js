@@ -46,7 +46,7 @@ async function fetchPrs() {
 }
 
 async function logout() {
-  await chrome.storage.local.remove('github_token')
+  await chrome.storage.local.clear()
   chrome.action.setBadgeText({text: '?'});
   chrome.action.setBadgeBackgroundColor({color: 'red'});
   chrome.runtime.sendMessage({ action: "Logout" });
