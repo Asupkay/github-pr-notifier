@@ -8,6 +8,21 @@ const errorMessage = document.getElementById("errorMessage");
 
 document.getElementById("refreshIcon").addEventListener('click', (event) => {
   chrome.runtime.sendMessage({ action: "refreshPrs" })
+  let start = null;
+  const duration = 500;
+  const element = document.getElementById('refreshIcon');
+  
+  function rotate(timestamp) {
+      if (!start) start = timestamp;
+      let progress = timestamp - start;
+      let rotation = Math.min(progress / duration, 1) * 360; 
+      element.style.transform = `rotate(${rotation}deg)`;
+
+      if (progress < duration) {
+          requestAnimationFrame(rotate);
+      }
+  }
+  requestAnimationFrame(rotate);
 });
 
 tokenForm.addEventListener('submit', async (event) => {
