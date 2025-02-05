@@ -49,9 +49,9 @@ async function displayPrs() {
   prList.style.display = 'block';
   prList.innerHTML = '';
   prData.items.forEach(pr => {
-    const li = document.createElement('li');
-    li.innerHTML = `<a href="${pr.html_url}" target="_blank">${pr.title}</a>`;
-    prList.appendChild(li);
+    const div = document.createElement('div');
+    div.innerHTML = `<a href="${pr.html_url}" target="_blank">${pr.title}</a>`;
+    prList.appendChild(div);
   });
 
 }
