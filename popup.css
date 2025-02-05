@@ -1,5 +1,20 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/InterVariable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/InterVariable-Italic.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: italic;
+}
+
 body {
     width: 300px;
+    font-family: "Inter", serif;
 }
 
 #loginBlock {
@@ -13,6 +28,11 @@ body {
     display: flex;
     margin-top: 4px;
     gap: 2px;
+}
+
+#authorDiv>img {
+    height: 14px;
+    border-radius: 50%;
 }
 
 #firstPrLine {
@@ -30,10 +50,6 @@ body {
 #firstPrLine>div {
     flex-shrink: 0;
     text-align: right;
-}
-
-#authorDiv>img {
-    height: 14px;
 }
 
 #prBlock {
