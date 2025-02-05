@@ -10,11 +10,9 @@ async function fetchPrs() {
       Authorization: `token ${githubToken}`,
     }
   })
-  console.log(response);
   if (!response.ok) {
     if (response.status === 401) {
       // Log the user out as their token is probably expired
-      console.log("there");
       logout(true);
     }
     return;
@@ -24,10 +22,8 @@ async function fetchPrs() {
   const prResponse = await fetch(`https://api.github.com/search/issues?q=review-requested:${userData.login}+is:pr+state:open`, {
     headers: { Authorization: `token ${githubToken}` }
   })
-  console.log(prResponse);
   if (!prResponse.ok) {
     if (prResponse.status === 401) {
-      console.log("here");
       logout(true);
     }
     return;
@@ -35,7 +31,7 @@ async function fetchPrs() {
   const lastPrUpdate = new Date();
   const prData = await prResponse.json();
 
-  chrome.action.setBadgeText({text: formatItemsNum(prData.items.length)});
+  chrome.action.setBadgeText({text: formatItemsNum(prData.total_count)});
   chrome.action.setBadgeBackgroundColor({color: 'black'});
 
   await chrome.storage.local.set({ prData, lastPrUpdate: lastPrUpdate.toString() })

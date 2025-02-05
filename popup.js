@@ -65,7 +65,6 @@ async function displayPrs() {
   prList.innerHTML = '';
   prData.items.forEach(pr => {
     const div = document.createElement('div');
-    console.log(pr);
 
     const firstLine = document.createElement('div')
     firstLine.id = "firstPrLine";
@@ -87,7 +86,6 @@ async function displayPrs() {
     username.innerText = pr?.user?.login
     const userPicture = document.createElement('img');
     userPicture.src = pr?.user?.avatar_url;
-    console.log(username);
     authorDiv.appendChild(userPicture);
     authorDiv.appendChild(username);
 
