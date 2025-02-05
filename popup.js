@@ -75,6 +75,7 @@ async function displayPrs() {
     prLink.innerText = pr.title;
     const lastUpdate = document.createElement('div');
     lastUpdate.innerText = getTimeSinceChanges(new Date(pr.updated_at))
+    lastUpdate.title = `Last updated: ${pr.updated_at}`;
     firstLine.appendChild(prLink);
     firstLine.appendChild(lastUpdate);
 
