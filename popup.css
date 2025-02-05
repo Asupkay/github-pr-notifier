@@ -10,10 +10,19 @@ body {
     display: none;
 }
 
+#submitButton {
+    margin-top: 8px;
+}
+
 #noPrsBlock {
     color: gray;
 }
 
 .text-align-right {
     text-align: right;
+}
+
+#errorMessage {
+    color: red;
+    display: none;
 }

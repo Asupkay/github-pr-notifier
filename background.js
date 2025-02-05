@@ -10,14 +10,12 @@ async function fetchPrs() {
       Authorization: `token ${githubToken}`,
     }
   })
+  console.log(response);
   if (!response.ok) {
     if (response.status === 401) {
       // Log the user out as their token is probably expired
-      await chrome.storage.local.remove('github_token')
-      chrome.action.setBadgeText({text: '?'});
-      chrome.action.setBadgeBackgroundColor({color: 'red'});
-      chrome.runtime.sendMessage({ action: "Logout" });
-      return;
+      console.log("there");
+      logout();
     }
     return;
   }
@@ -26,6 +24,14 @@ async function fetchPrs() {
   const prResponse = await fetch(`https://api.github.com/search/issues?q=review-requested:${userData.login}+is:pr+state:open`, {
     headers: { Authorization: `token ${githubToken}` }
   })
+  console.log(prResponse);
+  if (!prResponse.ok) {
+    if (prResponse.status === 401) {
+      console.log("here");
+      logout();
+    }
+    return;
+  }
   const lastPrUpdate = new Date();
   const prData = await prResponse.json();
 
@@ -37,6 +43,13 @@ async function fetchPrs() {
   chrome.runtime.sendMessage({ action: "PrsRefreshed" });
   return prData;
 
+}
+
+async function logout() {
+  await chrome.storage.local.remove('github_token')
+  chrome.action.setBadgeText({text: '?'});
+  chrome.action.setBadgeBackgroundColor({color: 'red'});
+  chrome.runtime.sendMessage({ action: "Logout" });
 }
 
 function formatItemsNum(amountOfItems) {

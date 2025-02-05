@@ -7,11 +7,16 @@
   <body>
     <div id="loginBlock">
       <h2>Login</h2>
-      <div>A GitHub personal token is needed to retrieve your PRs. To create one go <a href="https://github.com/settings/personal-access-tokens" target="_blank">here</a> and give it read-only permissions to Pull Requests</div>
+      <div>
+        <p>For the extension to retrieve your pull requests, you'll need a GitHub personal access token, which you can create <a href="https://github.com/settings/personal-access-tokens" target="_blank">here</a>. When setting it up, choose an expiration date. If you set one, you'll need to log in again once it expires. Selecting 'No expiration' allows continuous access without needing to re-authenticate.
+        </p>
+        <p> You'll also need to select repository access: public repositories, all repositories, or selected repositories. If you choose 'All' or 'Selected', be sure to grant read-only access to Pull Requests.</p>
+      </div>
       <form id="tokenForm" autocomplete="off">
         <label for="tokenField">GitHub token:</label>
-        <input type="text" id="tokenField" name="tokenField" required/>
-        <button type="submit">Submit</button>
+        <input type="text" id="tokenField" name="tokenField"/>
+        <button id="submitButton" type="submit">Submit</button>
+        <div id="errorMessage"></div>
       </form>
     </div>
     <div id="prBlock">

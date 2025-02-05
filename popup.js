@@ -4,6 +4,7 @@ const prList = document.getElementById('prList');
 const prBlock = document.getElementById('prBlock');
 const noPrsBlock = document.getElementById('noPrsBlock');
 const lastPrUpdateDisplay = document.getElementById('lastPrUpdate');
+const errorMessage = document.getElementById("errorMessage");
 
 tokenForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -11,15 +12,25 @@ tokenForm.addEventListener('submit', async (event) => {
   const accessToken = document.getElementById('tokenField').value;
 
   if (!accessToken) {
+    showError('Field must not be empty')
     return;
   }
 
   await chrome.storage.local.set({ github_token: accessToken })
 
   if (await checkGithubTokenValidity(accessToken)) {
+    errorMessage.style.display = "none";
     checkLoginStatus();
+    return;
   }
+
+  showError('Token is not valid');
 });
+
+function showError(message) {
+  errorMessage.textContent = message;
+  errorMessage.style.display = "block";
+}
 
 async function displayPrs() {
   const { prData } = await chrome.storage.local.get(['prData']);
