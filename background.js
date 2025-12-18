@@ -43,7 +43,8 @@ async function fetchPrs() {
 
   const lastPrUpdate = new Date();
 
-  chrome.action.setBadgeText({text: formatItemsNum(reviewRequestsData.total_count)});
+  const badgeText = `${formatItemsNum(reviewRequestsData.total_count)}|${formatItemsNum(openPrsData.total_count)}`;
+  chrome.action.setBadgeText({text: badgeText});
   chrome.action.setBadgeBackgroundColor({color: 'black'});
 
   await chrome.storage.local.set({
