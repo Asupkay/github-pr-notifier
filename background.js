@@ -41,15 +41,27 @@ async function fetchPrs() {
   }
   const openPrsData = await openPrsResponse.json();
 
+  const readyToMergeResponse = await fetch(`https://api.github.com/search/issues?q=author:${userData.login}+is:pr+state:open+review:approved+status:success`, {
+    headers: { Authorization: `token ${githubToken}` }
+  })
+  if (!readyToMergeResponse.ok) {
+    if (readyToMergeResponse.status === 401) {
+      logout(true);
+    }
+    return;
+  }
+  const readyToMergeData = await readyToMergeResponse.json();
+
   const lastPrUpdate = new Date();
 
-  const badgeText = `${formatItemsNum(reviewRequestsData.total_count)}|${formatItemsNum(openPrsData.total_count)}`;
+  const badgeText = `${formatItemsNum(reviewRequestsData.total_count)}|${formatItemsNum(readyToMergeData.total_count)}`;
   chrome.action.setBadgeText({text: badgeText});
   chrome.action.setBadgeBackgroundColor({color: 'black'});
 
   await chrome.storage.local.set({
     reviewRequestsData,
     openPrsData,
+    readyToMergeData,
     lastPrUpdate: lastPrUpdate.toString()
   })
 
