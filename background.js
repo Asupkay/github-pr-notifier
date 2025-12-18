@@ -19,25 +19,40 @@ async function fetchPrs() {
   }
   const userData = await response.json();
 
-  const prResponse = await fetch(`https://api.github.com/search/issues?q=review-requested:${userData.login}+is:pr+state:open`, {
+  const reviewRequestsResponse = await fetch(`https://api.github.com/search/issues?q=review-requested:${userData.login}+is:pr+state:open`, {
     headers: { Authorization: `token ${githubToken}` }
   })
-  if (!prResponse.ok) {
-    if (prResponse.status === 401) {
+  if (!reviewRequestsResponse.ok) {
+    if (reviewRequestsResponse.status === 401) {
       logout(true);
     }
     return;
   }
-  const lastPrUpdate = new Date();
-  const prData = await prResponse.json();
+  const reviewRequestsData = await reviewRequestsResponse.json();
 
-  chrome.action.setBadgeText({text: formatItemsNum(prData.total_count)});
+  const openPrsResponse = await fetch(`https://api.github.com/search/issues?q=author:${userData.login}+is:pr+state:open`, {
+    headers: { Authorization: `token ${githubToken}` }
+  })
+  if (!openPrsResponse.ok) {
+    if (openPrsResponse.status === 401) {
+      logout(true);
+    }
+    return;
+  }
+  const openPrsData = await openPrsResponse.json();
+
+  const lastPrUpdate = new Date();
+
+  chrome.action.setBadgeText({text: formatItemsNum(reviewRequestsData.total_count)});
   chrome.action.setBadgeBackgroundColor({color: 'black'});
 
-  await chrome.storage.local.set({ prData, lastPrUpdate: lastPrUpdate.toString() })
+  await chrome.storage.local.set({
+    reviewRequestsData,
+    openPrsData,
+    lastPrUpdate: lastPrUpdate.toString()
+  })
 
   chrome.runtime.sendMessage({ action: "PrsRefreshed" });
-  return prData;
 
 }
 

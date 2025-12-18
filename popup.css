@@ -123,3 +123,34 @@ body {
 #refreshIcon:hover {
     cursor: pointer;
 }
+
+#tabContainer {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid black;
+    margin-bottom: 8px;
+}
+
+.tab {
+    flex: 1;
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid black;
+    border-bottom: none;
+}
+
+.tab:hover {
+    background-color: #f0f0f0;
+}
+
+.tab.active {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+
+.tab:first-child {
+    border-right: none;
+}

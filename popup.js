@@ -1,3 +1,6 @@
+const TAB_REVIEW_REQUESTS = 'reviewRequests';
+const TAB_OPEN_PRS = 'openPrs';
+
 const tokenForm = document.getElementById('tokenForm');
 const loginBlock = document.getElementById('loginBlock');
 const prList = document.getElementById('prList');
@@ -5,6 +8,10 @@ const prBlock = document.getElementById('prBlock');
 const noPrsBlock = document.getElementById('noPrsBlock');
 const lastPrUpdateDisplay = document.getElementById('lastPrUpdate');
 const errorMessage = document.getElementById("errorMessage");
+const reviewRequestsTab = document.getElementById('reviewRequestsTab');
+const openPrsTab = document.getElementById('openPrsTab');
+
+let activeTab = TAB_REVIEW_REQUESTS;
 
 document.getElementById("refreshIcon").addEventListener('click', (event) => {
   chrome.runtime.sendMessage({ action: "refreshPrs" })
@@ -23,6 +30,20 @@ document.getElementById("refreshIcon").addEventListener('click', (event) => {
       }
   }
   requestAnimationFrame(rotate);
+});
+
+reviewRequestsTab.addEventListener('click', () => {
+  activeTab = TAB_REVIEW_REQUESTS;
+  reviewRequestsTab.classList.add('active');
+  openPrsTab.classList.remove('active');
+  displayPrs();
+});
+
+openPrsTab.addEventListener('click', () => {
+  activeTab = TAB_OPEN_PRS;
+  openPrsTab.classList.add('active');
+  reviewRequestsTab.classList.remove('active');
+  displayPrs();
 });
 
 tokenForm.addEventListener('submit', async (event) => {
@@ -52,7 +73,9 @@ function showError(message) {
 }
 
 async function displayPrs() {
-  const { prData } = await chrome.storage.local.get(['prData']);
+  const { reviewRequestsData, openPrsData } = await chrome.storage.local.get(['reviewRequestsData', 'openPrsData']);
+
+  const prData = activeTab === TAB_REVIEW_REQUESTS ? reviewRequestsData : openPrsData;
 
   if (!prData || prData.items.length === 0) {
     prList.style.display = 'none';
