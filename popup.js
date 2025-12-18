@@ -32,17 +32,19 @@ document.getElementById("refreshIcon").addEventListener('click', (event) => {
   requestAnimationFrame(rotate);
 });
 
-reviewRequestsTab.addEventListener('click', () => {
+reviewRequestsTab.addEventListener('click', async () => {
   activeTab = TAB_REVIEW_REQUESTS;
   reviewRequestsTab.classList.add('active');
   inProgressTab.classList.remove('active');
+  await chrome.storage.local.set({ activeTab });
   displayPrs();
 });
 
-inProgressTab.addEventListener('click', () => {
+inProgressTab.addEventListener('click', async () => {
   activeTab = TAB_IN_PROGRESS;
   inProgressTab.classList.add('active');
   reviewRequestsTab.classList.remove('active');
+  await chrome.storage.local.set({ activeTab });
   displayPrs();
 });
 
@@ -183,6 +185,20 @@ async function displayTime() {
 
 setInterval(displayTime, 1000);
 
+async function restoreActiveTab() {
+  const { activeTab: savedTab } = await chrome.storage.local.get(['activeTab']);
+
+  if (savedTab === TAB_IN_PROGRESS) {
+    activeTab = TAB_IN_PROGRESS;
+    inProgressTab.classList.add('active');
+    reviewRequestsTab.classList.remove('active');
+  } else {
+    activeTab = TAB_REVIEW_REQUESTS;
+    reviewRequestsTab.classList.add('active');
+    inProgressTab.classList.remove('active');
+  }
+}
+
 async function checkLoginStatus() {
   const { github_token: githubToken } = await chrome.storage.local.get(['github_token']);
   //const githubToken = null;
@@ -190,9 +206,10 @@ async function checkLoginStatus() {
     loginBlock.style.display = 'block';
     prBlock.style.display = 'none';
     return;
-  } 
+  }
   loginBlock.style.display = 'none';
   prBlock.style.display = 'block';
+  await restoreActiveTab();
   displayTime();
   displayPrs();
   await chrome.runtime.sendMessage({ action: "refreshPrs" })
