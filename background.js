@@ -45,7 +45,10 @@ async function fetchPrs() {
 
   const badgeText = `${formatItemsNum(reviewRequestsData.total_count)}|${formatItemsNum(openPrsData.total_count)}`;
   chrome.action.setBadgeText({text: badgeText});
-  chrome.action.setBadgeBackgroundColor({color: 'black'});
+
+  // Set badge color to yellow if there are review requests, otherwise black
+  const badgeColor = reviewRequestsData.total_count > 0 ? '#FFA500' : 'black';
+  chrome.action.setBadgeBackgroundColor({color: badgeColor});
 
   await chrome.storage.local.set({
     reviewRequestsData,
