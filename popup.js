@@ -1,6 +1,5 @@
 const TAB_REVIEW_REQUESTS = 'reviewRequests';
 const TAB_IN_PROGRESS = 'inProgress';
-const TAB_READY_TO_MERGE = 'readyToMerge';
 
 const tokenForm = document.getElementById('tokenForm');
 const loginBlock = document.getElementById('loginBlock');
@@ -11,7 +10,6 @@ const lastPrUpdateDisplay = document.getElementById('lastPrUpdate');
 const errorMessage = document.getElementById("errorMessage");
 const reviewRequestsTab = document.getElementById('reviewRequestsTab');
 const inProgressTab = document.getElementById('inProgressTab');
-const readyToMergeTab = document.getElementById('readyToMergeTab');
 
 let activeTab = TAB_REVIEW_REQUESTS;
 
@@ -38,7 +36,6 @@ reviewRequestsTab.addEventListener('click', () => {
   activeTab = TAB_REVIEW_REQUESTS;
   reviewRequestsTab.classList.add('active');
   inProgressTab.classList.remove('active');
-  readyToMergeTab.classList.remove('active');
   displayPrs();
 });
 
@@ -46,15 +43,6 @@ inProgressTab.addEventListener('click', () => {
   activeTab = TAB_IN_PROGRESS;
   inProgressTab.classList.add('active');
   reviewRequestsTab.classList.remove('active');
-  readyToMergeTab.classList.remove('active');
-  displayPrs();
-});
-
-readyToMergeTab.addEventListener('click', () => {
-  activeTab = TAB_READY_TO_MERGE;
-  readyToMergeTab.classList.add('active');
-  reviewRequestsTab.classList.remove('active');
-  inProgressTab.classList.remove('active');
   displayPrs();
 });
 
@@ -85,27 +73,9 @@ function showError(message) {
 }
 
 async function displayPrs() {
-  const { reviewRequestsData, openPrsData, readyToMergeData } = await chrome.storage.local.get(['reviewRequestsData', 'openPrsData', 'readyToMergeData']);
+  const { reviewRequestsData, openPrsData } = await chrome.storage.local.get(['reviewRequestsData', 'openPrsData']);
 
-  let prData;
-  if (activeTab === TAB_REVIEW_REQUESTS) {
-    prData = reviewRequestsData;
-  } else if (activeTab === TAB_READY_TO_MERGE) {
-    prData = readyToMergeData;
-  } else if (activeTab === TAB_IN_PROGRESS) {
-    // Derive in-progress PRs: all open PRs minus ready-to-merge PRs
-    if (!openPrsData || !readyToMergeData) {
-      prData = openPrsData;
-    } else {
-      const readyToMergeIds = new Set(readyToMergeData.items.map(pr => pr.id));
-      const inProgressItems = openPrsData.items.filter(pr => !readyToMergeIds.has(pr.id));
-      prData = {
-        ...openPrsData,
-        items: inProgressItems,
-        total_count: inProgressItems.length
-      };
-    }
-  }
+  const prData = activeTab === TAB_REVIEW_REQUESTS ? reviewRequestsData : openPrsData;
 
   if (!prData || prData.items.length === 0) {
     prList.style.display = 'none';
