@@ -1,4 +1,4 @@
-# GithubPRNotifier
+# GitHub PR Notifier
 
 A Chrome extension for getting notifications when PRs need your attention.
 
