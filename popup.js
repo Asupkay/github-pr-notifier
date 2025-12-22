@@ -91,6 +91,11 @@ async function displayPrs() {
   prData.items.forEach(pr => {
     const div = document.createElement('div');
 
+    const repoName = document.createElement('div');
+    repoName.className = 'repo-name';
+    repoName.innerText = pr.base?.repo?.full_name || pr.repository_url?.split('/').slice(-2).join('/') || 'Unknown repo';
+    repoName.title = repoName.innerText;
+
     const firstLine = document.createElement('div')
     firstLine.id = "firstPrLine";
     const prLink = document.createElement('a');
@@ -115,6 +120,7 @@ async function displayPrs() {
     authorDiv.appendChild(userPicture);
     authorDiv.appendChild(username);
 
+    div.appendChild(repoName);
     div.appendChild(firstLine);
     div.appendChild(authorDiv);
     prList.appendChild(div);

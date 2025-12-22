@@ -35,6 +35,16 @@ body {
     border-radius: 50%;
 }
 
+.repo-name {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
 #firstPrLine {
     display: flex;
     gap: 4px;
