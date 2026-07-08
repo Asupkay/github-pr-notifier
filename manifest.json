@@ -1,5 +1,5 @@
 {
-  "name": "GitHub Pull Request Notifier",
+  "name": "Pull Request Notifier",
   "description": "Extension for getting notifications when PRs need your attention",
   "version": "1.2.0",
   "manifest_version": 3,

@@ -1,6 +1,4 @@
-# GitHub PR Notifier
-
-[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-Install-blue?logo=googlechrome)](https://chromewebstore.google.com/detail/github-pull-request-notif/hklhbealfhlnpjiliaflmflgpnifaffc?hl=en&authuser=0)
+# Pull Request Notifier
 
 A Chrome extension for getting notifications when PRs need your attention.
 
@@ -14,7 +12,7 @@ A Chrome extension for getting notifications when PRs need your attention.
 
 ## Installation
 
-Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/github-pull-request-notif/hklhbealfhlnpjiliaflmflgpnifaffc?hl=en&authuser=0)
+Install from the Chrome Web Store (link will be updated once the new listing is live).
 
 ## Local Development & Testing
 
